@@ -46,7 +46,7 @@ const requestFail = (error) => {
 // before return response
 const beforeRes = async (response) => {
   console.log("before return response...........");
-  console.log(response);
+  // console.log(response);
   const data = response.data;
 
   if (data && data.error === "ERROR_ACCESS_TOKEN") {
@@ -59,6 +59,12 @@ const beforeRes = async (response) => {
     memberCookieValue.refreshToken = result.refreshToken;
 
     setCookie("member", JSON.stringify(memberCookieValue), 1);
+
+    const originalRequest = response.config;
+
+    originalRequest.headers.Authorization = `Bearer ${result.accessToken}`;
+
+    return await axios(originalRequest);
   }
 
   return response;
