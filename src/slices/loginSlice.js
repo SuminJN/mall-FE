@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { loginPost } from "../api/memberApi";
+import { setCookie } from "../util/cookieUtil";
 
 const initState = {
   email: "",
@@ -27,21 +28,27 @@ const loginSlice = createSlice({
 
       return { ...initState };
     },
-    extraReducers: (builder) => {
-      builder
-        .addCase(loginPostAsync.fulfilled, (state, action) => {
-          console.log("fulfilled");
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(loginPostAsync.fulfilled, (state, action) => {
+        console.log("fulfilled");
 
-          const payload = action.payload;
-          return payload;
-        })
-        .addCase(loginPostAsync.pending, (state, action) => {
-          console.log("pending");
-        })
-        .addCase(loginPostAsync.rejected, (state, action) => {
-          console.log("rejected");
-        });
-    },
+        const payload = action.payload;
+
+        // 정상적인 로그인시에만 저장
+        if (!payload.error) {
+          setCookie("member", JSON.stringify(payload), 1); // 1일 보관
+        }
+
+        return payload;
+      })
+      .addCase(loginPostAsync.pending, (state, action) => {
+        console.log("pending");
+      })
+      .addCase(loginPostAsync.rejected, (state, action) => {
+        console.log("rejected");
+      });
   },
 });
 
