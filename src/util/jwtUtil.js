@@ -1,10 +1,27 @@
 import axios from "axios";
+import { getCookies } from "./cookieUtil";
 
 const jwtAxios = axios.create();
 
 // before request
 const beforeReq = (config) => {
   console.log("before request...........");
+  const memberInfo = getCookies("member");
+
+  if (!memberInfo) {
+    console.log("Member NOT FOUND");
+    return Promise.reject({
+      response: {
+        data: { error: "REQUIRE_LOGIN" },
+      },
+    });
+  }
+
+  const { accessToken } = memberInfo;
+
+  // Authorization 헤더 처리
+  config.headers.Authorization = `Bearer ${accessToken}`;
+
   return config;
 };
 
