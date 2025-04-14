@@ -1,7 +1,19 @@
 import axios from "axios";
-import { getCookies } from "./cookieUtil";
+import { getCookies, setCookie } from "./cookieUtil";
+import { API_SERVER_HOST } from "../api/todoApi";
 
 const jwtAxios = axios.create();
+
+const refreshJWT = async (accessToken, refreshToken) => {
+  const host = API_SERVER_HOST;
+  const header = { headers: { Authorization: `Bearer ${accessToken}` } };
+  const res = await axios.get(`${host}/api/member/refresh?refreshToken=${refreshToken}`, header);
+
+  console.log("-------------------");
+  console.log(res.data);
+
+  return res.data;
+};
 
 // before request
 const beforeReq = (config) => {
@@ -32,8 +44,23 @@ const requestFail = (error) => {
 };
 
 // before return response
-const beforeRes = (response) => {
+const beforeRes = async (response) => {
   console.log("before return response...........");
+  console.log(response);
+  const data = response.data;
+
+  if (data && data.error === "ERROR_ACCESS_TOKEN") {
+    const memberCookieValue = getCookies("member");
+
+    const result = await refreshJWT(memberCookieValue.accessToken, memberCookieValue.refreshToken);
+    console.log("refreshJWT RESULT", result);
+
+    memberCookieValue.accessToken = result.accessToken;
+    memberCookieValue.refreshToken = result.refreshToken;
+
+    setCookie("member", JSON.stringify(memberCookieValue), 1);
+  }
+
   return response;
 };
 
