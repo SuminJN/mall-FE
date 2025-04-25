@@ -20,11 +20,28 @@ const host = API_SERVER_HOST;
 const ReadComponent = ({ pno }) => {
   const { moveToList, moveToModify } = useCustomMove();
 
+  const { loginState } = useCustomLogin();
+
+  const { cartItems, changeCart } = useCustomCart();
+
   const { isFetching, data } = useQuery(["products", pno], () => getOne(pno), {
     staleTime: 1000 * 10,
     retry: 1,
   });
-  const handleClickAddCart = () => {};
+  const handleClickAddCart = () => {
+    let qty = 1;
+
+    const addedItem = cartItems.find((item) => item.pno === parseInt(pno))[0];
+
+    if (addedItem) {
+      if (window.confirm("이미 추가된 상품입니다. 추가하시곘습니까? ") === false) {
+        return;
+      }
+      qty = addedItem.qty + 1;
+    }
+
+    changeCart({ email: loginState.email, pno: pno, qty: qty });
+  };
 
   const product = data || initState;
 
