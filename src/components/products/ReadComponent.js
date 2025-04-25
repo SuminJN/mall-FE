@@ -5,6 +5,7 @@ import FetchingModal from "../common/FetchingModal";
 import { API_SERVER_HOST } from "../../api/todoApi";
 import useCustomCart from "../../hooks/useCustomCart";
 import useCustomLogin from "../../hooks/useCustomLogin";
+import { useQuery } from "@tanstack/react-query";
 
 const initState = {
   pno: "",
@@ -17,41 +18,19 @@ const initState = {
 const host = API_SERVER_HOST;
 
 const ReadComponent = ({ pno }) => {
-  const [product, setProduct] = useState(initState);
   const { moveToList, moveToModify } = useCustomMove();
-  const [fetching, setFetching] = useState(false);
 
-  const { changeCart, cartItems } = useCustomCart();
+  const { isFetching, data } = useQuery(["products", pno], () => getOne(pno), {
+    staleTime: 1000 * 10,
+    retry: 1,
+  });
+  const handleClickAddCart = () => {};
 
-  const { loginState } = useCustomLogin();
-
-  const handleClickAddCart = () => {
-    let qty = 1;
-
-    const addedItem = cartItems.filter((item) => item.pno === parseInt(pno))[0];
-
-    if (addedItem) {
-      if (window.confirm("이미 추가된 상품입니다. 추가하시겠습니까? ") === false) {
-        return;
-      }
-      qty = addedItem.qty + 1;
-    }
-
-    changeCart({ email: loginState.email, pno: pno, qty: qty });
-  };
-
-  useEffect(() => {
-    setFetching(true);
-
-    getOne(pno).then((data) => {
-      setProduct(data);
-      setFetching(false);
-    });
-  }, [pno]);
+  const product = data || initState;
 
   return (
     <div className="border-2 border-sky-200 mt-10 m-2 p-4">
-      {fetching ? <FetchingModal /> : <></>}
+      {isFetching ? <FetchingModal /> : <></>}
 
       <div className="flex justify-center mt-10">
         <div className="relative mb-4 flex w-full flex-wrap items-stretch">
