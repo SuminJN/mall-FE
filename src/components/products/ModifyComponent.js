@@ -143,7 +143,6 @@ const ModifyComponent = ({ pno }) => {
           />
         </div>
       </div>
-      ;
       <div className="flex justify-center">
         <div className="relative mb-4 flex w-full flex-wrap items-stretch">
           <div className="w-1/5 p-6 text-right font-bold">DELETE</div>
@@ -158,10 +157,9 @@ const ModifyComponent = ({ pno }) => {
           </select>
         </div>
       </div>
-      ;
       <div className="flex justify-center">
         <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-          <div className="w-1/5 p-6 text-right font-bold">Price</div>
+          <div className="w-1/5 p-6 text-right font-bold">Files</div>
           <input
             ref={uploadRef}
             className="w-4/5 p-6 rounded-r border border-solid border-neutral-300 shadow-md resize-y"
@@ -170,7 +168,6 @@ const ModifyComponent = ({ pno }) => {
           />
         </div>
       </div>
-      ;
       <div className="flex justify-center">
         <div className="relative mb-4 flex w-full flex-wrap items-stretch">
           <div className="w-1/5 p-6 text-right font-bold">Image</div>
