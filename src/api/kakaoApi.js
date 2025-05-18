@@ -1,8 +1,7 @@
 import axios from "axios";
-import { API_SERVER_HOST } from "./todoApi";
 
-const rest_api_key = process.env.REACT_APP_REST_API_KEY;
-const redirect_uri = process.env.REACT_APP_REDIRECT_URI;
+const rest_api_key = process.env.REACT_APP_REST_API_KEY_KAKAO;
+const redirect_uri = process.env.REACT_APP_REDIRECT_URI_KAKAO;
 
 const auth_code_path = "https://kauth.kakao.com/oauth/authorize";
 
@@ -14,7 +13,7 @@ export const getKakaoLoginLink = () => {
   return kakaoURL;
 };
 
-export const getAccessToken = async (authCode) => {
+export const getKakaoAccessToken = async (authCode) => {
   const header = {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
@@ -35,8 +34,10 @@ export const getAccessToken = async (authCode) => {
   return accessToken;
 };
 
-export const getMemberWithAccessToken = async (accessToken) => {
-  const res = await axios.get(`${API_SERVER_HOST}/api/member/kakao?accessToken=${accessToken}`);
+export const getMemberWithKakaoAccessToken = async (accessToken) => {
+  const res = await axios.get(
+    `${process.env.REACT_APP_API_SERVER_HOST}/api/member/kakao?accessToken=${accessToken}`
+  );
 
   return res.data;
 };

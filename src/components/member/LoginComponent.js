@@ -4,6 +4,7 @@ import { login, loginPostAsync } from "../../slices/loginSlice";
 import { useNavigate } from "react-router-dom";
 import useCustomLogin from "../../hooks/useCustomLogin";
 import KakaoLoginComponent from "./KakaoLoginComponent";
+import GoogleLoginComponent from "./GoogleLoginComponent";
 
 const initState = {
   email: "",
@@ -71,7 +72,9 @@ const LoginComponent = () => {
           </button>
         </div>
       </div>
+      <div className="text-center text-blue-500">로그인시에 자동 가입처리 됩니다</div>
       <KakaoLoginComponent />
+      <GoogleLoginComponent />
     </div>
   );
 };

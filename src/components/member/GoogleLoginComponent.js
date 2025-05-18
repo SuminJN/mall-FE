@@ -1,18 +1,18 @@
-import { getKakaoLoginLink } from "../../api/kakaoApi";
 import { Link } from "react-router-dom";
+import { getGoogleLoginLink } from "../../api/googleApi";
 
-const KakaoLoginComponent = () => {
-  const link = getKakaoLoginLink();
+const GoogleLoginComponent = () => {
+  const link = getGoogleLoginLink();
 
   return (
     <div className="flex flex-col">
       <div className="flex justify-center w-full">
         <div className="text-3xl text-center m-6 text-white font-extrabold w-3/4 bg-yellow-500 shadow-sm rounded p-2">
-          <Link to={link}>KAKAO LOGIN</Link>
+          <Link to={link}>GOOGLE LOGIN</Link>
         </div>
       </div>
     </div>
   );
 };
 
-export default KakaoLoginComponent;
+export default GoogleLoginComponent;
