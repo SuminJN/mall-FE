@@ -31,7 +31,7 @@ const ReadComponent = ({ pno }) => {
   const handleClickAddCart = () => {
     let qty = 1;
 
-    const addedItem = cartItems.find((item) => item.pno === parseInt(pno))[0];
+    const addedItem = cartItems.find((item) => item.pno === parseInt(pno));
 
     if (addedItem) {
       if (window.confirm("이미 추가된 상품입니다. 추가하시곘습니까? ") === false) {
