@@ -1,13 +1,21 @@
 import { Link } from "react-router-dom";
 import useCustomLogin from "../../hooks/useCustomLogin";
+import { useState } from "react";
 
 const BasicMenu = () => {
   const { loginState } = useCustomLogin();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <nav id="navbar" className="flex bg-blue-300">
-      <div className="w-4/5 bg-gray-500">
-        <ul className="flex p-4 text-white font-bold">
+      <div className="w-full bg-gray-500">
+        <div className="flex justify-between items-center p-4 md:hidden">
+          <button className="block text-2xl text-white" onClick={() => setMenuOpen(!menuOpen)}>
+            &#9776; {/* 햄버거 아이콘 */}
+          </button>
+          {/*<div className="text-white font-bold text-2xl">Menu</div>*/}
+        </div>
+        <ul className={`${menuOpen ? "block" : "hidden"} md:flex p-4 text-white font-bold`}>
           <li className="pr-6 text-2xl">
             <Link to={"/"}>Main</Link>
           </li>
